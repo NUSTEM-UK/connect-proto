@@ -1,0 +1,19 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**,",
+                "/home/jonathan/Arduino/libraries/**",
+                "/home/jonathan/.arduino15/**",
+                "/home/jonathan/Downloads/arduino-1.8.10-linux64/arduino-1.8.10/**"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "clang-x64"
+        }
+    ],
+    "version": 4
+}
