@@ -1,7 +1,14 @@
+// Code to drive the test piece hardware
+// Aiming to test 2x ServoEasing servos + Neopixel (built-in) + Neopixel strip (external)
+// Code mostly lifted from conNecT_test_Easing.ino, but with networking stripped out
+// ...though I do eventually want to include networking and MQTT receive.
+
 #include <Kniwwelino.h>
 #include <ServoEasing.h>
 
 #define VERSION "0.01"
+
+#define WIFI_ON 0
 
 int my_mood;
 String my_icon;
@@ -22,16 +29,18 @@ int servo2Speed = 20;
 #define DUCK "B0110011100011110111000000"
 
 void setup() {
-    Kniwwelino.begin("conNecT_test_Easing", true, true, false); // Wifi=true, Fastboot=true, MQTT Logging=false
+    Kniwwelino.begin("conNecT_test_Easing", WIFI_ON, true, false); // Wifi=true, Fastboot=true, MQTT Logging=false
 
     Serial.begin(115200);
     Serial.println();
     Serial.println(F("START " __FILE__ "\r\nVersion " VERSION " from " __DATE__));
 
-    Kniwwelino.MQTTsetGroup(String("NUSTEM"));
-    Kniwwelino.MQTTonMessage(messageReceived);
-    Kniwwelino.MQTTsubscribe("MESSAGE");
-    Kniwwelino.MQTTsubscribe("MOOD");
+    #if WIFI_ON
+        Kniwwelino.MQTTsetGroup(String("NUSTEM"));
+        Kniwwelino.MQTTonMessage(messageReceived);
+        Kniwwelino.MQTTsubscribe("MESSAGE");
+        Kniwwelino.MQTTsubscribe("MOOD");
+    #endif
 
     Servo1.attach(D5);
     Servo2.attach(D7);
@@ -42,8 +51,13 @@ void setup() {
     Servo1.setEasingType(EASE_CUBIC_IN_OUT);
     Servo2.setEasingType(EASE_CUBIC_IN_OUT);
 
+    Kniwwelino.RGBsetBrightness((int)200);
+    Kniwwelino.RGBclear();
+
     Kniwwelino.MATRIXdrawIcon(ICON_SMILE);
+    #if WIFI_ON
     Kniwwelino.MQTTpublish("THISISME", String(Kniwwelino.getMAC()));
+    #endif
     // animation_rate = 100;
     my_mood = 0;
     my_icon = String(HAPPY);
@@ -58,7 +72,11 @@ void loop() {
     if (Kniwwelino.BUTTONBclicked()) {
         Kniwwelino.MATRIXdrawIcon(ICON_ARROW_UP);
         Kniwwelino.sleep((unsigned long) 500);
+        #if WIFI_ON
         Kniwwelino.MQTTpublish("MOOD", String(my_icon)); // May need to reorder this
+        #else
+        network_mood = String(my_icon);
+        #endif
     }
     if (network_mood != displayed_mood) {
         displayed_mood = network_mood;
@@ -70,10 +88,12 @@ void loop() {
             servo1Speed = 100;
             for (int i = 0; i < 3 ; i++) {
                 Servo1.startEaseTo(180, servo1Speed, true);
+                Kniwwelino.RGBsetColorEffect(String("00FF00"), RGB_FLASH, -1);
                 while (Servo1.isMovingAndCallYield()) {
                     // Nothing here
                 }
                 Servo1.startEaseTo(0, servo1Speed, true);
+                Kniwwelino.RGBsetColorEffect(String("FF0000"), RGB_GLOW, -1);
                 while (Servo1.isMovingAndCallYield()) {
                     // Nothing here
                 }
@@ -83,6 +103,23 @@ void loop() {
         else if (displayed_mood == String(SAD)) {
             // SAD response goes here
             Serial.println("New mood received: SAD");
+                        Serial.println("New mood received: HAPPY");
+            Servo1.setEasingType(EASE_CUBIC_IN_OUT);
+            Servo2.setEasingType(EASE_CUBIC_IN_OUT);
+            servo1Speed = 100;
+            servo2Speed = 200;
+            for (int i = 0; i < 3 ; i++) {
+                Servo2.startEaseTo(180, servo2Speed, true);
+                Servo1.startEaseTo(180, servo1Speed, true);
+                while (Servo1.isMovingAndCallYield()) {
+                    // Nothing here
+                }
+                Servo1.startEaseTo(0, servo1Speed, true);
+                Servo2.startEaseTo(0, servo2Speed, true);
+                while (Servo1.isMovingAndCallYield()) {
+                    // Nothing here
+                }
+            }
         }
         else if (displayed_mood == String(HEART)) {
             // HEART response goes here
