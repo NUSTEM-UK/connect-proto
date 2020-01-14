@@ -88,7 +88,7 @@ void loop() {
             servo1Speed = 100;
             for (int i = 0; i < 3 ; i++) {
                 Servo1.startEaseTo(180, servo1Speed, true);
-                Kniwwelino.RGBsetColorEffect(String("00FF00"), RGB_FLASH, -1);
+                Kniwwelino.RGBsetColorEffect(String("00FF00"), RGB_BLINK, -1);
                 while (Servo1.isMovingAndCallYield()) {
                     // Nothing here
                 }
