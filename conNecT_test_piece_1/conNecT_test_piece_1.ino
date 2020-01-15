@@ -4,9 +4,9 @@
 // ...though I do eventually want to include networking and MQTT receive.
 
 #include <Kniwwelino.h>
-#include <ServoEasing.h>
+#include <ServoEasing.h> // Added
 
-#define VERSION "0.01"
+#define VERSION "0.02"
 
 #define WIFI_ON 0
 
@@ -18,25 +18,18 @@ String received_string;
 
 ServoEasing Servo1;
 ServoEasing Servo2;
+//TODO: What happens if we have a third servo?
 
 int servo1Speed = 20;
 int servo2Speed = 20;
 
+// TODO: refactor some of this into a sensible library
 #define HAPPY "B0000001010000001000101110"
 #define SAD "B0000001010000000111010001"
 #define HEART "B0101011111111110111000100"
 #define SKULL "B0111010101111110111001110" 
 #define DUCK "B0110011100011110111000000"
 
-void servos_engage() {
-    Servo1.attach(D5);
-    Servo2.attach(D7);
-}
-
-void servos_disengage() {
-    Servo1.detach();
-    Servo2.detach();
-}
 
 void setup() {
     Kniwwelino.begin("conNecT_test_piece_1", WIFI_ON, true, false); // Wifi=true, Fastboot=true, MQTT Logging=false
@@ -76,79 +69,11 @@ void setup() {
 }
 
 void loop() {
-
-    // TODO: refactor buttons clicks into a conNecT library call @done
     connectHandleButtons();
     connectCheckMood();
     
     Kniwwelino.loop();
 
-}
-
-static void messageReceived(String &topic, String &payload) {
-  if (topic=="MESSAGE") {
-    received_string = payload;
-  } else if (topic=="MOOD") {
-    network_mood = payload;
-  }
-}
-
-void connectHandleButtons() {
-    if (Kniwwelino.BUTTONAclicked()) {
-        change_mood();
-    }
-    if (Kniwwelino.BUTTONBclicked()) {
-        Kniwwelino.MATRIXdrawIcon(ICON_ARROW_UP);
-        Kniwwelino.sleep((unsigned long)500);
-        #if WIFI_ON
-        Kniwwelino.MQTTpublish("MOOD", String(my_icon)); // May need to reorder this
-        #else
-        network_mood = String(my_icon);
-        #endif
-    }
-}
-
-void connectCheckMood() {
-    if (network_mood != displayed_mood) {
-        displayed_mood = network_mood;
-        Kniwwelino.MATRIXdrawIcon(displayed_mood);
-        if (displayed_mood == String(HAPPY)) {
-            // HAPPY response goes here
-            goBeHappy();
-        }
-        else if (displayed_mood == String(SAD)) {
-            // SAD response goes here
-            goBeSad();
-        }
-        else if (displayed_mood == String(HEART)) {
-            // HEART response goes here
-            goBeLove();
-        }
-        else if (displayed_mood == String(SKULL)) {
-            // SKULL response goes here
-            goBeDead();
-        }
-        else if (displayed_mood == String(DUCK)) {
-            // DUCK response goes here
-            goBeDuck();
-        }
-    }
-}
-
-void change_mood() {
-    my_mood += 1;
-    // Loop around moods
-    if (my_mood > 4) {
-        my_mood = 0;
-    }
-    if (my_mood == 0) {my_icon = String(HAPPY);}
-    else if (my_mood == 1) {my_icon = String(SAD);}
-    else if (my_mood == 2) {my_icon = String(HEART);}
-    else if (my_mood == 3) {my_icon = String(SKULL);}
-    else if (my_mood == 4) {my_icon = String(DUCK);}
-    Kniwwelino.MATRIXdrawIcon(my_icon);
-    Kniwwelino.sleep((unsigned long) 1000);
-    Kniwwelino.MATRIXdrawIcon(network_mood);
 }
 
 
@@ -168,6 +93,7 @@ void goBeHappy() {
             // Nothing here, intentionally
         }
     }
+    Kniwwelino.RGBclear(); // Turn the LED off.
     servos_disengage();
 }
 
@@ -188,6 +114,7 @@ void goBeSad() {
             // Nothing here
         }
     }
+    Kniwwelino.RGBclear(); // Turn the LED off
     servos_disengage();
 }
 
