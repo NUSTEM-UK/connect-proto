@@ -76,77 +76,11 @@ void setup() {
 }
 
 void loop() {
-    if (Kniwwelino.BUTTONAclicked()) {
-        change_mood();
-    }
-    if (Kniwwelino.BUTTONBclicked()) {
-        Kniwwelino.MATRIXdrawIcon(ICON_ARROW_UP);
-        Kniwwelino.sleep((unsigned long) 500);
-        #if WIFI_ON
-        Kniwwelino.MQTTpublish("MOOD", String(my_icon)); // May need to reorder this
-        #else
-        network_mood = String(my_icon);
-        #endif
-    }
-    if (network_mood != displayed_mood) {
-        displayed_mood = network_mood;
-        Kniwwelino.MATRIXdrawIcon(displayed_mood);
-        if (displayed_mood == String(HAPPY)) {
-            // HAPPY response goes here
-            Serial.println("New mood received: HAPPY");
-            servos_engage();
-            Servo1.setEasingType(EASE_CUBIC_IN_OUT);
-            servo1Speed = 100;
-            for (int i = 0; i < 3 ; i++) {
-                Servo1.startEaseTo(180, servo1Speed, true);
-                Kniwwelino.RGBsetColorEffect(String("00FF00"), RGB_BLINK, -1);
-                while (Servo1.isMovingAndCallYield()) {
-                    // Nothing here
-                }
-                Servo1.startEaseTo(0, servo1Speed, true);
-                Kniwwelino.RGBsetColorEffect(String("FF0000"), RGB_GLOW, -1);
-                while (Servo1.isMovingAndCallYield()) {
-                    // Nothing here
-                }
-            }
-            servos_disengage();
-        }
-        else if (displayed_mood == String(SAD)) {
-            // SAD response goes here
-            Serial.println("New mood received: SAD");
-                        Serial.println("New mood received: HAPPY");
-            servos_engage();
-            Servo1.setEasingType(EASE_CUBIC_IN_OUT);
-            Servo2.setEasingType(EASE_CUBIC_IN_OUT);
-            servo1Speed = 100;
-            servo2Speed = 200;
-            for (int i = 0; i < 3 ; i++) {
-                Servo2.startEaseTo(180, servo2Speed, true);
-                Servo1.startEaseTo(180, servo1Speed, true);
-                while (Servo1.isMovingAndCallYield()) {
-                    // Nothing here
-                }
-                Servo1.startEaseTo(0, servo1Speed, true);
-                Servo2.startEaseTo(0, servo2Speed, true);
-                while (Servo1.isMovingAndCallYield()) {
-                    // Nothing here
-                }
-            }
-            servos_disengage();
-        }
-        else if (displayed_mood == String(HEART)) {
-            // HEART response goes here
-            Serial.println("New mood received: HEART");
-        }
-        else if (displayed_mood == String(SKULL)) {
-            // SKULL response goes here
-            Serial.println("New mood received: SKULL");
-        }
-        else if (displayed_mood == String(DUCK)) {
-            // DUCK response goes here
-            Serial.println("New mood received: DUCK");
-        }
-    }
+
+    // TODO: refactor buttons clicks into a conNecT library call @done
+    connectHandleButtons();
+    connectCheckMood();
+    
     Kniwwelino.loop();
 
 }
@@ -159,6 +93,47 @@ static void messageReceived(String &topic, String &payload) {
   }
 }
 
+void connectHandleButtons() {
+    if (Kniwwelino.BUTTONAclicked()) {
+        change_mood();
+    }
+    if (Kniwwelino.BUTTONBclicked()) {
+        Kniwwelino.MATRIXdrawIcon(ICON_ARROW_UP);
+        Kniwwelino.sleep((unsigned long)500);
+        #if WIFI_ON
+        Kniwwelino.MQTTpublish("MOOD", String(my_icon)); // May need to reorder this
+        #else
+        network_mood = String(my_icon);
+        #endif
+    }
+}
+
+void connectCheckMood() {
+    if (network_mood != displayed_mood) {
+        displayed_mood = network_mood;
+        Kniwwelino.MATRIXdrawIcon(displayed_mood);
+        if (displayed_mood == String(HAPPY)) {
+            // HAPPY response goes here
+            goBeHappy();
+        }
+        else if (displayed_mood == String(SAD)) {
+            // SAD response goes here
+            goBeSad();
+        }
+        else if (displayed_mood == String(HEART)) {
+            // HEART response goes here
+            goBeLove();
+        }
+        else if (displayed_mood == String(SKULL)) {
+            // SKULL response goes here
+            goBeDead();
+        }
+        else if (displayed_mood == String(DUCK)) {
+            // DUCK response goes here
+            goBeDuck();
+        }
+    }
+}
 
 void change_mood() {
     my_mood += 1;
@@ -174,4 +149,56 @@ void change_mood() {
     Kniwwelino.MATRIXdrawIcon(my_icon);
     Kniwwelino.sleep((unsigned long) 1000);
     Kniwwelino.MATRIXdrawIcon(network_mood);
+}
+
+
+void goBeHappy() {
+    Serial.println("New mood received: HAPPY");
+    servos_engage();
+    servo1Speed = 100;
+    for (int i = 0; i < 3; i++) {
+        Servo1.startEaseTo(180, servo1Speed, true);
+        Kniwwelino.RGBsetColorEffect(String("00FF00"), RGB_BLINK, -1);
+        while (Servo1.isMovingAndCallYield()) {
+            // Nothing here, intentionally
+        }
+        Servo1.startEaseTo(0, servo1Speed, true);
+        Kniwwelino.RGBsetColorEffect(String("FF0000"), RGB_GLOW, -1);
+        while (Servo1.isMovingAndCallYield()) {
+            // Nothing here, intentionally
+        }
+    }
+    servos_disengage();
+}
+
+void goBeSad() {
+    Serial.println("New mood received: SAD");
+    servos_engage();
+    servo1Speed = 100;
+    servo2Speed = 200;
+    for (int i = 0; i < 3; i++) {
+        Servo2.startEaseTo(180, servo2Speed, true);
+        Servo1.startEaseTo(180, servo1Speed, true);
+        while (Servo1.isMovingAndCallYield()) {
+            // Nothing here
+        }
+        Servo1.startEaseTo(0, servo1Speed, true);
+        Servo2.startEaseTo(0, servo2Speed, true);
+        while (Servo1.isMovingAndCallYield()) {
+            // Nothing here
+        }
+    }
+    servos_disengage();
+}
+
+void goBeLove() {
+    Serial.println("New mood received: HEART");
+}
+
+void goBeDead() {
+    Serial.println("New mood received: SKULL");
+}
+
+void goBeDuck() {
+    Serial.println("New mood received: DUCK");
 }
