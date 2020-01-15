@@ -43,7 +43,7 @@ void setup() {
     Servo2.setEasingType(EASE_CUBIC_IN_OUT);
 
     Kniwwelino.MATRIXdrawIcon(ICON_SMILE);
-    Kniwwelino.MQTTpublish("THISISME", String(Kniwwelino.getMAC()));
+    Kniwwelino.MQTTpublish("hello_my_name_is", String(Kniwwelino.getMAC()));
     // animation_rate = 100;
     my_mood = 0;
     my_icon = String(HAPPY);

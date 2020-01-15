@@ -28,8 +28,18 @@ int servo2Speed = 20;
 #define SKULL "B0111010101111110111001110" 
 #define DUCK "B0110011100011110111000000"
 
+void servos_engage() {
+    Servo1.attach(D5);
+    Servo2.attach(D7);
+}
+
+void servos_disengage() {
+    Servo1.detach();
+    Servo2.detach();
+}
+
 void setup() {
-    Kniwwelino.begin("conNecT_test_Easing", WIFI_ON, true, false); // Wifi=true, Fastboot=true, MQTT Logging=false
+    Kniwwelino.begin("conNecT_test_piece_1", WIFI_ON, true, false); // Wifi=true, Fastboot=true, MQTT Logging=false
 
     Serial.begin(115200);
     Serial.println();
@@ -56,7 +66,7 @@ void setup() {
 
     Kniwwelino.MATRIXdrawIcon(ICON_SMILE);
     #if WIFI_ON
-    Kniwwelino.MQTTpublish("THISISME", String(Kniwwelino.getMAC()));
+    Kniwwelino.MQTTpublish("hello_my_name_is", String(Kniwwelino.getMAC()));
     #endif
     // animation_rate = 100;
     my_mood = 0;
@@ -84,6 +94,7 @@ void loop() {
         if (displayed_mood == String(HAPPY)) {
             // HAPPY response goes here
             Serial.println("New mood received: HAPPY");
+            servos_engage();
             Servo1.setEasingType(EASE_CUBIC_IN_OUT);
             servo1Speed = 100;
             for (int i = 0; i < 3 ; i++) {
@@ -98,12 +109,13 @@ void loop() {
                     // Nothing here
                 }
             }
-            
+            servos_disengage();
         }
         else if (displayed_mood == String(SAD)) {
             // SAD response goes here
             Serial.println("New mood received: SAD");
                         Serial.println("New mood received: HAPPY");
+            servos_engage();
             Servo1.setEasingType(EASE_CUBIC_IN_OUT);
             Servo2.setEasingType(EASE_CUBIC_IN_OUT);
             servo1Speed = 100;
@@ -120,6 +132,7 @@ void loop() {
                     // Nothing here
                 }
             }
+            servos_disengage();
         }
         else if (displayed_mood == String(HEART)) {
             // HEART response goes here

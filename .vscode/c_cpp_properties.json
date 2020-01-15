@@ -55,6 +55,14 @@
             "cStandard": "c11",
             "cppStandard": "c++11",
             "intelliSenseMode": "clang-x64"
+        },
+        {
+            "name": "Mac",
+            "includePath": [
+                "/Users/rygp8/Library/Arduino15/packages/esp8266/tools/**",
+                "/Users/rygp8/Library/Arduino15/packages/esp8266/hardware/esp8266/2.4.0/**"
+            ],
+            "forcedInclude": []
         }
     ],
     "version": 4
