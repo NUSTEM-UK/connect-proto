@@ -80,6 +80,7 @@ void connectCheckMood() {
             goBeDuck();
         }
         // Additional responses would go here
+        Kniwwelino.MATRIXdrawIcon(displayed_mood);
     }
 }
 
