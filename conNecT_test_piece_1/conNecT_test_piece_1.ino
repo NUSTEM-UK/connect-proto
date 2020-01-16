@@ -10,6 +10,24 @@
 
 #define WIFI_ON 0
 
+// Below set to defaults, will need overriding for conNecT
+// (these are defined in Kniwwelino.h)
+#define DEF_UPDATESERVER		"broker.kniwwelino.lu"
+#define DEF_MQTTSERVER		 	"broker.kniwwelino.lu"
+#define DEF_MQTTPORT			1883
+#define DEF_MQTTUSER			"kniwwelino"
+#define DEF_MQTTPW		        "esp8266"
+#define DEF_MQTTPUBLICDELAY		300
+#define DEF_MQTTBASETOPIC		"kniwwelino/"
+#define DEF_FWUPDATEURL      	"/updateFW"
+#define DEF_CONFUPDATEURL       "/updateConf"
+
+#define NTP_SERVER			  	"lu.pool.ntp.org"
+#define NTP_PORT			  	8888
+#define NTP_TIMEZONE			1
+#define NTP_PACKET_SIZE			48 // NTP time is in the first 48 bytes of message
+
+
 int my_mood;
 String my_icon;
 String network_mood;
