@@ -2,10 +2,24 @@
     "cSpell.words": [
         "Aclicked",
         "Bclicked",
+        "FWUPDATEURL",
         "MQTT",
+        "MQTTBASETOPIC",
+        "MQTTPORT",
+        "MQTTPUBLICDELAY",
+        "MQTTPW",
+        "MQTTSERVER",
+        "MQTTUSER",
         "Tpublish",
         "Tsubscribe",
         "Wifi",
         "println"
-    ]
+    ],
+    "files.associations": {
+        "thread": "cpp",
+        "algorithm": "cpp",
+        "bitset": "cpp",
+        "cstdlib": "cpp",
+        "*.tcc": "cpp"
+    }
 }
