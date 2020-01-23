@@ -12,6 +12,7 @@
 
 // Below set to defaults, will need overriding for conNecT
 // (these are defined in Kniwwelino.h)
+// TODO: check Kniwwelino.MQTTsetup()
 #define DEF_UPDATESERVER		"broker.kniwwelino.lu"
 #define DEF_MQTTSERVER		 	"broker.kniwwelino.lu"
 #define DEF_MQTTPORT			1883
@@ -36,12 +37,14 @@ String received_string;
 
 ServoEasing Servo1;
 ServoEasing Servo2;
-//TODO: What happens if we have a third servo?
+//TODO: What happens if we have a third servo? @done
+// Pull in changes from KW_flap4.ino
 
 int servo1Speed = 20;
 int servo2Speed = 20;
 
 // TODO: refactor some of this into a sensible library
+// NB. Can't move these lines into an included header, it doeesn't work.
 #define HAPPY "B0000001010000001000101110"
 #define SAD "B0000001010000000111010001"
 #define HEART "B0101011111111110111000100"
