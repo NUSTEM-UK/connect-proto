@@ -24,14 +24,30 @@
 #define NTP_TIMEZONE			1
 #define NTP_PACKET_SIZE			48 // NTP time is in the first 48 bytes of message
 
+int my_mood;
+String my_icon;
+String network_mood;
+String displayed_mood;
+String received_string;
+
 // Constructor
 Connect::Connect(int pin)
 {
     // Setup stuff here
 }
 
-void Connect::method()
+oid Connect::method()
 {
-    // Method code
+    // Class method code
 }
 
+void connectInit() {
+    Kniwwelino.RGBsetBrightness((int)200);
+    Kniwwelino.RGBclear();
+    Kniwwelino.MATRIXdrawIcon(ICON_SMILE)
+    #if WIFI_ON
+    Kniwwelino.MQTTpublish("hello_my_name_is", String(Kniwwelino.getMAC()));
+    #endif
+    int my_mood = 0;
+
+}

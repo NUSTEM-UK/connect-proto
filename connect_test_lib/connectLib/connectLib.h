@@ -21,4 +21,8 @@ class Connect
         int _pin;
 };
 
+void connectInit(void);
+
+
+
 #endif
