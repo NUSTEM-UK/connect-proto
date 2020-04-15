@@ -24,6 +24,7 @@
                 "/Users/jonathan/Library/Arduino15/packages/esp8266/hardware/esp8266/2.6.2/cores/esp8266",
                 "/Users/jonathan/Library/Arduino15/packages/esp8266/hardware/esp8266/2.6.2/variants/d1",
                 "/Users/jonathan/Documents/Arduino/libraries/Kniwwelino",
+                "/Users/jonathan/Documents/Arduino/libraries/ConnectLib",
                 "/Users/jonathan/Library/Arduino15/packages/esp8266/hardware/esp8266/2.6.2/libraries/Ticker/src",
                 "/Users/jonathan/Library/Arduino15/packages/esp8266/hardware/esp8266/2.6.2/libraries/Wire",
                 "/Users/jonathan/Library/Arduino15/packages/esp8266/hardware/esp8266/2.6.2/libraries/EEPROM",

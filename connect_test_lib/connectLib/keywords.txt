@@ -1,3 +1,0 @@
-Connect	KEYWORD1
-method	KEYWORD2
-method2	KEYWORD2
