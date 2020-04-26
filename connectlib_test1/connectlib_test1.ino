@@ -5,9 +5,7 @@
 
 #include <Connect.h>
 
-#define VERSION "0.02"
-
-Connect myDevice();
+#define VERSION "0.0a-app"
 
 ServoEasing Servo1;
 ServoEasing Servo2;
@@ -16,7 +14,7 @@ int servo1Speed = 20;
 int servo2Speed = 20;
 
 void setup() {
-    myDevice.begin();
+    Connect.begin();
     Serial.println(F("START " __FILE__ "\r\nVersion " VERSION " from " __DATE__));
 
     Servo1.attach(D5);
@@ -29,15 +27,15 @@ void setup() {
     Servo2.setEasingType(EASE_CUBIC_IN_OUT);
 
     // animation_rate = 100;
-    my_mood = 0;
+    Connect.setMood(0);
     my_icon = String(HAPPY);
     network_mood = String("B0000000000000000000000000");
     displayed_mood = String("B0000000000000000000000000");
 }
 
 void loop() {
-    connectHandleButtons();
-    connectCheckMood();
+    Connect.handleButtons();
+    checkMood();
     
     Kniwwelino.loop();
 
@@ -95,4 +93,44 @@ void goBeDead() {
 
 void goBeDuck() {
     Serial.println("New mood received: DUCK");
+}
+
+void servos_engage() {
+    Servo1.attach(D5);
+    Servo2.attach(D7);
+}
+
+void servos_disengage() {
+    Servo1.detach();
+    Servo2.detach();
+}
+
+
+void checkMood() {
+    if (network_mood != displayed_mood) {
+        displayed_mood = network_mood;
+        Kniwwelino.MATRIXdrawIcon(displayed_mood);
+        if (displayed_mood == String(HAPPY)) {
+            // HAPPY response goes here
+            goBeHappy();
+        }
+        else if (displayed_mood == String(SAD)) {
+            // SAD response goes here
+            goBeSad();
+        }
+        else if (displayed_mood == String(HEART)) {
+            // HEART response goes here
+            goBeLove();
+        }
+        else if (displayed_mood == String(SKULL)) {
+            // SKULL response goes here
+            goBeDead();
+        }
+        else if (displayed_mood == String(DUCK)) {
+            // DUCK response goes here
+            goBeDuck();
+        }
+        // Additional responses would go here
+        Kniwwelino.MATRIXdrawIcon(displayed_mood);
+    }
 }
