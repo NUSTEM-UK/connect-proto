@@ -32,6 +32,9 @@ void setup() {
     network_mood = String("B0000000000000000000000000");
     displayed_mood = String("B0000000000000000000000000");
 
+    Kniwwelino.MQTTonMessage(handleMood);
+
+
     
 }
 
@@ -43,6 +46,9 @@ void loop() {
 
 }
 
+void handleMood(String &topic, String &payload) {
+    
+}
 
 void goBeHappy() {
     Serial.println("New mood received: HAPPY");
