@@ -34,6 +34,7 @@ void setup() {
 
     Kniwwelino.MQTTonMessage(handleMood);
 
+    Connect.setMoodHandler("HAPPY", "beHappy");
 
     
 }
@@ -44,10 +45,6 @@ void loop() {
     
     Kniwwelino.loop();
 
-}
-
-void handleMood(String &topic, String &payload) {
-    
 }
 
 void goBeHappy() {
