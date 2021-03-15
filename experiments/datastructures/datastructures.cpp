@@ -7,6 +7,7 @@ struct Mood {
     int index;
     string text;
     string icon;
+    string callback;
 };
 
 
@@ -20,20 +21,31 @@ int main() {
     cout << endl;
 
     Mood moods[5] = {
-        {0, "HAPPY", ""},
-        {1, "SAD", ""},
-        {2, "HEART", ""},
-        {3, "SKULL", ""},
-        {4, "DUCK", ""}
+        {0, "HAPPY", "", "goBeHappy"},
+        {1, "SAD", "", "goBeSad"},
+        {2, "HEART", "", "goBeLove"},
+        {3, "SKULL", "", "goBeDead"},
+        {4, "DUCK", "", "goBeDuck"}
     };
 
     for (int i = 0; i < 5; i++)
     {
         cout << moods[i].text;
+        cout << " ";
+
+        cout << moods[i].callback;
         cout << endl;
     }
     
-    
+    string test = moods[0].callback();
+    cout << test;
 
+
+    return 1;
+}
+
+int goBeHappy() {
+    cout << "I am being happy";
+    cout << endl;
     return 1;
 }
