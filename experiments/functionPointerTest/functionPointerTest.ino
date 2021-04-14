@@ -5,11 +5,11 @@
 // Function pointer prototype to a function which takes an 'int' and returns 'void'
 typedef void (*GenericFP)(void *, ...);
 
-void Page1(void *skip, ...);
-void Page2(void *skip, ...);
-void Page3(void *skip, ...);
+void myFunction1(void *skip, ...);
+void myFunction2(void *skip, ...);
+void myFunction3(void *skip, ...);
 // Create an array of 'GenericFP' function pointers. Note & operator
-GenericFP MenuFP[3] = {&Page1, &Page2, &Page3};
+GenericFP MenuFP[3] = {&myFunction1, &myFunction2, &myFunction3};
 
 void setup()
 {
@@ -25,29 +25,29 @@ void loop()
     delay(2000);
 }
 
-void Page1(void *skip, ...)
+void myFunction1(void *skip, ...)
 {
     va_list args;
     va_start(args, skip);
     int foo1 = va_arg(args, int);
-    Serial.print("Page1 = ");
+    Serial.print("myFunction1 = ");
     Serial.println(foo1);
 }
 
-void Page2(void *skip, ...)
+void myFunction2(void *skip, ...)
 {
     va_list args;
     va_start(args, skip);
     int foo1 = va_arg(args, int);
     float foo2 = (float)va_arg(args, double);
 
-    Serial.print("Page2 = ");
+    Serial.print("myFunction2 = ");
     Serial.print(foo1);
     Serial.print(", ");
     Serial.println(foo2);
 }
 
-void Page3(void *skip, ...)
+void myFunction3(void *skip, ...)
 {
     va_list args;
     va_start(args, skip);
@@ -55,7 +55,7 @@ void Page3(void *skip, ...)
     float foo2 = (float)va_arg(args, double);
     const char *foo3 = va_arg(args, const char *);
 
-    Serial.print("Page3 = ");
+    Serial.print("myFunction3 = ");
     Serial.print(foo1);
     Serial.print(", ");
     Serial.print(foo2);
