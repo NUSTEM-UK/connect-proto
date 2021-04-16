@@ -1,9 +1,24 @@
 #include <Arduino.h>
 #include "cppQueue.h"
-#include "functionheader.h"
+// #include "functionheader.h"
 
 #define IMPLEMENTATION FIFO
 #define QUEUE_SIZE_ITEMS 10
+
+typedef void (*GenericFP)(void *, ...);
+// typedef void (*GenericFP)();
+
+typedef struct {
+    String targetDevice;
+    GenericFP call;
+    int queueVar1;
+    float queueVar2;
+    char * queueVar3;
+    int startPos;
+    int endPos;
+    const char * animationType;
+    float animationDuration;
+} deviceQueueItem;
 
 
 cppQueue servo1queue(sizeof(deviceQueueItem), QUEUE_SIZE_ITEMS, IMPLEMENTATION);
