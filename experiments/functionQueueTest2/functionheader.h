@@ -6,5 +6,9 @@ typedef struct {
     GenericFP call;
     int queueVar1;
     float queueVar2;
-    String queueVar3;
+    char * queueVar3;
+    int startPos;
+    int endPos;
+    const char * animationType;
+    float animationDuration;
 } deviceQueueItem;
