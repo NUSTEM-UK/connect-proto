@@ -12,6 +12,7 @@ deviceQueueItem tempDeviceQueueItem;
 deviceQueueItem myTemp2;
 
 // Declare the queueable functions
+// Variadic functions, we'll decode with va_args parsing within the function declarations
 void myFunction1(void *skip, ...);
 void myFunction2(void *skip, ...);
 void myFunction3(void *skip, ...);
