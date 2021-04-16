@@ -125,6 +125,9 @@ void myFunction4(void * skip, ...)
     const char *animationType = va_arg(args, const char *);
     // Implicit double, whatever the typedef says, cast to float
     float animationDuration = (float)va_arg(args, double);
+    // We're done parsing arguments, so clean up the list
+    va_end(args);
+
 
     Serial.print(foo1);
     Serial.print(", ");
