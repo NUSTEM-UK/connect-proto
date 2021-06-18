@@ -67,8 +67,14 @@ void setup() {
     while (!servo1queue.isEmpty())
     {
         servo1queue.pop(&myTemp2);
-        Serial.println(myTemp2.targetDevice);
-        // myTemp2.call(NULL, myTemp2.queueVar1);
+        Serial.println(myTemp2.targetDevice); //This is a String type, not a char * []
+
+        // In principle, could parse servo vs. LED queues and tidy up the
+        // following function call slightly. Or pass to handler functions to
+        // call onwards to library methods.
+
+        // Call the function pointed to by .call, passing variables by key
+        // (and let variadic function declarations handle the excess)
         myTemp2.call(NULL,
                      myTemp2.queueVar1,
                      myTemp2.queueVar2,
