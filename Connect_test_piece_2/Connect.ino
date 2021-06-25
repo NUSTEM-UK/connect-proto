@@ -115,32 +115,41 @@ void handleButtons() {
 void checkMood() {
     // Serial.println("Mood check");
     if (extrinsicMood.index != performedMood.index) {
+        // We have a new mood to represent
         performedMood = extrinsicMood;
         myMood = extrinsicMood;
+        // Display the associated icon
         Kniwwelino.MATRIXdrawIcon(performedMood.icon);
-        // TODO: call these from mood.callback
-        if (performedMood.text == "HAPPY") {
-            // HAPPY response goes here
-            doHappy();
-        }
-        else if (performedMood.text == "SAD") {
-            // SAD response goes here
-            doSad();
-        }
-        else if (performedMood.text == "HEART") {
-            // HEART response goes here
-            doLove();
-        }
-        else if (performedMood.text == "SKULL") {
-            // SKULL response goes here
-            doDead();
-        }
-        else if (performedMood.text == "DUCK") {
-            // DUCK response goes here
-            doDuck();
-        }
+        // Now call the associated action function.
+        performedMood.callback();
+        // Display the associated icon
+        // Do this after the callback too, in case we want to do
+        // something funky along the way.
+        Kniwwelino.MATRIXdrawIcon(performedMood.icon);
+
+        // TODO: Trash this now-unnecessary code
+        // if (performedMood.text == "HAPPY") {
+        //     // HAPPY response goes here
+        //     doHappy();
+        // }
+        // else if (performedMood.text == "SAD") {
+        //     // SAD response goes here
+        //     doSad();
+        // }
+        // else if (performedMood.text == "HEART") {
+        //     // HEART response goes here
+        //     doLove();
+        // }
+        // else if (performedMood.text == "SKULL") {
+        //     // SKULL response goes here
+        //     doDead();
+        // }
+        // else if (performedMood.text == "DUCK") {
+        //     // DUCK response goes here
+        //     doDuck();
+        // }
         // Additional responses would go here
-        Kniwwelino.MATRIXdrawIcon(performedMood.icon);
+        // Kniwwelino.MATRIXdrawIcon(performedMood.icon);
     }
 }
 

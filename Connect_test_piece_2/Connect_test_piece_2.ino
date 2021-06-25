@@ -10,11 +10,14 @@ ServoEasing Servo2;
 int servo1Speed = 20;
 int servo2Speed = 20;
 
+// We need a function pointer type to include in our Mood struct
+typedef void (*CallbackFunction)(void);
+
 typedef struct {
     int index;
     String text;
     String icon;
-    String callback;
+    CallbackFunction callback;
 } Mood;
 
 // We need to keep track of the number of moods manually, because C
@@ -75,11 +78,11 @@ void setup() {
     // above setup() (first string is truncated).
     // To add moods, append them to this array, and adjust numberOfMoods
     // accordingly.
-    moods[0] = {0, "HAPPY", "B0000001010000001000101110", "doHappy"};
-    moods[1] = {1, "SAD", "B0000001010000000111010001", "doSad"};
-    moods[2] = {2, "HEART", "B0101011111111110111000100", "doLove"};
-    moods[3] = {3, "SKULL", "B0111010101111110111001110", "doDead"};
-    moods[4] = {4, "DUCK", "B0110011100011110111000000", "doDuck"};
+    moods[0] = {0, "HAPPY", "B0000001010000001000101110", &doHappy};
+    moods[1] = {1, "SAD", "B0000001010000000111010001", &doSad};
+    moods[2] = {2, "HEART", "B0101011111111110111000100", &doLove};
+    moods[3] = {3, "SKULL", "B0111010101111110111001110", &doDead};
+    moods[4] = {4, "DUCK", "B0110011100011110111000000", &doDuck};
 
     // Start happy, because we're optimistic about the world
     myMood = moods[0];
@@ -93,10 +96,15 @@ void setup() {
     }
     Serial.println();
 
+    servos_disengage();
+
 }
 
 void loop() {
     handleButtons();
+    // TODO: Think about whether this gets called in the loop,
+    //       or only from messageReceived(). The latter would
+    //       seem more appropriate and performative?
     checkMood();
     Kniwwelino.loop();
     delay(500);
