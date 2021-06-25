@@ -36,7 +36,7 @@ int main() {
         cout << moods[i].callback;
         cout << endl;
     }
-    
+
     string test = moods[0].callback();
     cout << test;
 

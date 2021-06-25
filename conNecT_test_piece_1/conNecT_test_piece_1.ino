@@ -5,23 +5,31 @@
 
 #include <Kniwwelino.h>
 #include <ServoEasing.h> // Added
+#include "arduino_secrets.h" // defines MQTT_PASS
 
 #define VERSION "0.02"
 
-#define WIFI_ON 0
+#define WIFI_ON 1
+
+// FIXME: Horrid mess here, see "2021-06-23 Testing against NUSTEM again.md" for notes
 
 // Below set to defaults, will need overriding for conNecT
 // (these are defined in Kniwwelino.h)
 // TODO: check Kniwwelino.MQTTsetup()
-#define DEF_UPDATESERVER		"broker.kniwwelino.lu"
-#define DEF_MQTTSERVER		 	"broker.kniwwelino.lu"
-#define DEF_MQTTPORT			1883
-#define DEF_MQTTUSER			"kniwwelino"
-#define DEF_MQTTPW		        "esp8266"
-#define DEF_MQTTPUBLICDELAY		300
-#define DEF_MQTTBASETOPIC		"kniwwelino/"
-#define DEF_FWUPDATEURL      	"/updateFW"
-#define DEF_CONFUPDATEURL       "/updateConf"
+// DONE: MQTTsetup() was removed in ~1.3.1, drat.
+// New equivalent is MQTTUserSetup(), which doesn't do the same thing.
+// This is now all in arduinosecrets.h, because it doesn't 'stick'
+// if here, even if we wrap with #ifdef / #undef and so on.
+// Nope, still doesn't work.
+// #define DEF_UPDATESERVER		"connect.nustem.uk"
+// #define DEF_MQTTSERVER		 	"connect.nustem.uk"
+// #define DEF_MQTTPORT			1883
+// #define DEF_MQTTUSER			"connect"
+// #define DEF_MQTTPW		        "MQTT_PASS"
+// #define DEF_MQTTPUBLICDELAY		300
+// #define DEF_MQTTBASETOPIC		"kniwwelino/"
+// #define DEF_FWUPDATEURL      	"/updateFW"
+// #define DEF_CONFUPDATEURL       "/updateConf"
 
 #define NTP_SERVER			  	"lu.pool.ntp.org"
 #define NTP_PORT			  	8888
@@ -48,16 +56,34 @@ int servo2Speed = 20;
 #define HAPPY "B0000001010000001000101110"
 #define SAD "B0000001010000000111010001"
 #define HEART "B0101011111111110111000100"
-#define SKULL "B0111010101111110111001110" 
+#define SKULL "B0111010101111110111001110"
 #define DUCK "B0110011100011110111000000"
 
 
 void setup() {
+
     Kniwwelino.begin("conNecT_test_piece_1", WIFI_ON, true, false); // Wifi=true, Fastboot=true, MQTT Logging=false
 
     Serial.begin(115200);
     Serial.println();
+    Serial.println("---------");
     Serial.println(F("START " __FILE__ "\r\nVersion " VERSION " from " __DATE__));
+
+    // FIXME: Removed this because for now we're overriding defaults directly
+    //        in KniwwelinoLib/Kniwwelino.h.
+    // Set up custom broker for messages, at least.
+    // TODO: Decide whether to revert to KniwwelinoLib ~1.2.1, since MQTTUserSetup()
+    // was removed in 1.3.x. Or fork KniwwelinoLib, which would likely also work.
+    // Kniwwelino.MQTTUserSetup(DEF_MQTTSERVER, DEF_MQTTPORT, DEF_MQTTUSER, DEF_MQTTPW);
+
+    Serial.println("---------");
+    Serial.println("MQTT server overridden in custom KniwwelinoLib");
+    Serial.println(DEF_MQTTSERVER);
+    Serial.println(DEF_MQTTPORT);
+    Serial.println(DEF_MQTTUSER);
+    // Serial.println(DEF_MQTTPW);
+    Serial.println("---------");
+
 
     #if WIFI_ON
         Kniwwelino.MQTTsetGroup(String("NUSTEM"));
@@ -92,7 +118,7 @@ void setup() {
 void loop() {
     connectHandleButtons();
     connectCheckMood();
-    
+
     Kniwwelino.loop();
 
 }

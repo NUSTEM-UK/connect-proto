@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include "cppQueue.h"
+#include <ESP8266WiFi.h>
 // #include "functionheader.h"
 
 #define IMPLEMENTATION FIFO
@@ -37,6 +38,9 @@ String TargetDevice;
 String dummyString;
 
 void setup() {
+    // Disable wifi for testing so we're not spamming network message.
+    WiFi.mode(WIFI_OFF);
+
     Serial.begin(115200);
     Serial.println(">>> STARTING functionQueueTest2");
 
