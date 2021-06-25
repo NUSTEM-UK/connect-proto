@@ -17,18 +17,18 @@ void servos_disengage() {
 
 // TODO: check if this is part of the Kniwwelino base code
 static void messageReceived(String &topic, String &payload) {
-    Serial.println("---> MESSAGE RECEIVED");
+    Serial.println(F("---> MESSAGE RECEIVED"));
 
   if (topic=="MESSAGE") {
     received_string = payload;
   } else if (topic=="MOOD") {
-      Serial.println("Got a mood");
+    //   Serial.println(F("Got a mood"));
       int tempIndex = getMoodIndexFromString(payload);
       if (tempIndex != -1) {
         extrinsicMood = moods[tempIndex];
       }
-    Serial.print("Mood is: ");
-    Serial.println(tempIndex);
+    // Serial.print(F("Mood is: "));
+    // Serial.println(tempIndex);
 
     // network_mood = payload;
   }
@@ -38,31 +38,31 @@ static void messageReceived(String &topic, String &payload) {
 int getMoodIndexFromString (String moodString) {
     int foundMoodIndex = -1; // Initialise
     int i = 0;
-    Serial.print("Checking for index for Mood: ");
-    Serial.println(moodString);
+    // Serial.print(F("Checking for index for Mood: "));
+    // Serial.println(moodString);
 
     while (i < numberOfMoods) {
         // This is ugly because we always loop through the entire array,
         // but the obvious alternatives seem worse
         // TODO: find an obvious alternative that isn't worse.
-        Serial.print("Stepping through: ");
-        Serial.print(i);
-        Serial.print(moods[i].text);
+        // Serial.print(F("Stepping through: "));
+        // Serial.print(i);
+        // Serial.print(moods[i].text);
 
         if (moodString == moods[i].text) {
-            Serial.print("  Found a match at ");
-            Serial.println(i);
+            // Serial.print(F("  Found a match at "));
+            // Serial.println(i);
             foundMoodIndex = i;
         } else {
-            Serial.print("  Did not find a match at ");
-            Serial.println(i);
+            // Serial.print(F("  Did not find a match at "));
+            // Serial.println(i);
         }
         i++;
     }
     // Will return match or -1 if no match
     if (foundMoodIndex != -1) {
-        Serial.print("Got a matching mood: ");
-        Serial.println(moods[foundMoodIndex].text);
+        // Serial.print(F("Got a matching mood: "));
+        // Serial.println(moods[foundMoodIndex].text);
     }
 
     return foundMoodIndex;
@@ -75,7 +75,7 @@ void change_mood() {
     // other data in the struct
     myMood = moods[myMood.index++];
     // Loop around moods (self-adjusting for number of moods.)
-    if (myMood.index > sizeof(moods)) {
+    if (myMood.index > numberOfMoods) {
         myMood.index = 0;
     }
     // Display our new internal mood

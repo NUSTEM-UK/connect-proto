@@ -39,14 +39,14 @@ void setup() {
 
     Serial.begin(115200);
     Serial.println();
-    Serial.println("-------");
+    Serial.println(F("-------"));
     Serial.println(F("START " __FILE__ "\r\nVersion " VERSION " from " __DATE__));
-    Serial.println("-------");
-    Serial.println("MQTT server overridden in custom KniwwelinoLib");
+    Serial.println(F("-------"));
+    Serial.println(F("MQTT server overridden in custom KniwwelinoLib"));
     Serial.println(DEF_MQTTSERVER);
     Serial.println(DEF_MQTTPORT);
     Serial.println(DEF_MQTTUSER);
-    Serial.println("---------");
+    Serial.println(F("---------"));
 
     #if WIFI_ON
     Kniwwelino.MQTTsetGroup(String("NUSTEM"));
@@ -89,7 +89,7 @@ void setup() {
     // Cross-check that we have moods correctly.
     for (size_t i = 0; i < numberOfMoods; i++) {
         Serial.print(moods[i].text);
-        Serial.print(" : ");
+        Serial.print(F(" : "));
     }
     Serial.println();
 
@@ -103,7 +103,7 @@ void loop() {
 }
 
 void doHappy() {
-    Serial.println("New mood received: HAPPY");
+    Serial.println(F("New mood received: HAPPY"));
     // servos_engage();
     // servo1Speed = 100;)
     // for (int i = 0; i < 3; i++) {
@@ -123,7 +123,7 @@ void doHappy() {
 }
 
 void doSad() {
-    Serial.println("New mood received: SAD");
+    Serial.println(F("New mood received: SAD"));
     // servos_engage();
     // servo1Speed = 100;
     // servo2Speed = 200;
@@ -144,13 +144,13 @@ void doSad() {
 }
 
 void doLove() {
-    Serial.println("New mood received: HEART");
+    Serial.println(F("New mood received: HEART"));
 }
 
 void doDead() {
-    Serial.println("New mood received: SKULL");
+    Serial.println(F("New mood received: SKULL"));
 }
 
 void doDuck() {
-    Serial.println("New mood received: DUCK");
+    Serial.println(F("New mood received: DUCK"));
 }
