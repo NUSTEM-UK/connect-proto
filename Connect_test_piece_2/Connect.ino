@@ -22,15 +22,15 @@ static void messageReceived(String &topic, String &payload) {
   if (topic=="MESSAGE") {
     received_string = payload;
   } else if (topic=="MOOD") {
-    //   Serial.println(F("Got a mood"));
+      //   Serial.println(F("Got a mood"));
       int tempIndex = getMoodIndexFromString(payload);
       if (tempIndex != -1) {
-        extrinsicMood = moods[tempIndex];
+          extrinsicMood = moods[tempIndex];
       }
-    // Serial.print(F("Mood is: "));
-    // Serial.println(tempIndex);
+      // Serial.print(F("Mood is: "));
+      // Serial.println(tempIndex);
 
-    // network_mood = payload;
+      // network_mood = payload;
   }
 }
 
@@ -73,14 +73,22 @@ void change_mood() {
     // Increment mood. Note that we can't just increment
     // myMood.index, that would break the connection to the
     // other data in the struct
-    myMood = moods[myMood.index++];
+    int tempMoodIndex = myMood.index;
+    tempMoodIndex++;
     // Loop around moods (self-adjusting for number of moods.)
-    if (myMood.index > numberOfMoods) {
-        myMood.index = 0;
+    // Note the obvious off-by-one error here, which took me
+    // much longer to spot than now seems reasonable.
+    if (tempMoodIndex > (numberOfMoods-1)) {
+        tempMoodIndex = 0;
     }
+    Serial.println(F(">>>Changing mood"));
+    Serial.print(F(">>>New mood is: "));
+    Serial.println(moods[tempMoodIndex].text);
     // Display our new internal mood
+    myMood = moods[tempMoodIndex];
     Kniwwelino.MATRIXdrawIcon(myMood.icon);
     Kniwwelino.sleep((unsigned long) 1000);
+    Serial.println(F(">>>Returning to extrinsicMood"));
     // Now return to the network mood
     Kniwwelino.MATRIXdrawIcon(extrinsicMood.icon);
 }
@@ -88,9 +96,11 @@ void change_mood() {
 void handleButtons() {
     // Serial.println("Button check");
     if (Kniwwelino.BUTTONAclicked()) {
+        Serial.println(F(">>>BUTTON press: A"));
         change_mood();
     }
     if (Kniwwelino.BUTTONBclicked()) {
+        Serial.println(F(">>>BUTTON press: B"));
         Kniwwelino.MATRIXdrawIcon(ICON_ARROW_UP);
         Kniwwelino.sleep((unsigned long)500);
         #if WIFI_ON
