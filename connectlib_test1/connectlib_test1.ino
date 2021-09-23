@@ -36,13 +36,13 @@ void setup() {
 
     Connect.setMoodHandler("HAPPY", "beHappy");
 
-    
+
 }
 
 void loop() {
     Connect.handleButtons();
     checkMood();
-    
+
     Kniwwelino.loop();
 
 }
@@ -50,27 +50,27 @@ void loop() {
 void goBeHappy() {
     Serial.println("New mood received: HAPPY");
     servos_engage();
-    servo1Speed = 100;
+    servo1Speed = 200;
     for (int i = 0; i < 3; i++) {
         Servo1.startEaseTo(180, servo1Speed, true);
-        Kniwwelino.RGBsetColorEffect(String("00FF00"), RGB_BLINK, -1);
+        // Kniwwelino.RGBsetColorEffect(String("00FF00"), RGB_BLINK, -1);
         while (Servo1.isMovingAndCallYield()) {
             // Nothing here, intentionally
         }
         Servo1.startEaseTo(0, servo1Speed, true);
-        Kniwwelino.RGBsetColorEffect(String("FF0000"), RGB_GLOW, -1);
+        // Kniwwelino.RGBsetColorEffect(String("FF0000"), RGB_GLOW, -1);
         while (Servo1.isMovingAndCallYield()) {
             // Nothing here, intentionally
         }
     }
-    Kniwwelino.RGBclear(); // Turn the LED off.
+    // Kniwwelino.RGBclear(); // Turn the LED off.
     servos_disengage();
 }
 
 void goBeSad() {
     Serial.println("New mood received: SAD");
     servos_engage();
-    servo1Speed = 100;
+    servo1Speed = 20;
     servo2Speed = 200;
     for (int i = 0; i < 3; i++) {
         Servo2.startEaseTo(180, servo2Speed, true);

@@ -23,6 +23,16 @@ void printQueueStats() {
   Serial.println("");
 }
 
+// Flush queue
+// I should really do this by adding a method to the ArduinoQueue class,
+// but for now, this works. Note the indirection so we pass in a servoQueue queue
+// and act on whichever has been passed.
+void flush(ArduinoQueue<servoQueue> &targetQueue) {
+    while (!targetQueue.isEmpty()) {
+        targetQueue.dequeue();
+    }
+}
+
 void setup() {
     Serial.begin(115200);
     Serial.println(">>> STARTING...");
@@ -69,6 +79,18 @@ void loop() {
         Serial.printf(" %i %i\r\n", myTemp2.param1, myTemp2.param2);
     }
 
+    Serial.println("");
+    myTempServoQueue = {"Test Value A", 11, 22};
+    myServoQueue1.enqueue(myTempServoQueue);
+    myTempServoQueue = {"Test Value B", 33, 44};
+    myServoQueue1.enqueue(myTempServoQueue);
+
+    Serial.println(">>> More values added, flushing...");
+    printQueueStats();
+    flush(myServoQueue1);
+    Serial.println(">>> Queue is flushed.");
+    printQueueStats();
+
     // for (int i = 0; i < QUEUE_SIZE_ITEMS && !myServoQueue1.isEmpty(); i++)
     // {
     //     if (!myServoQueue1.isEmpty())
@@ -79,7 +101,7 @@ void loop() {
     //     }
     // }
 
-    printQueueStats();
+    // printQueueStats();
 
     while(true) {
         ESP.wdtFeed();
