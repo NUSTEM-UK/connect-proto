@@ -84,9 +84,10 @@ void loop() {
 
     // MOVE TO 180 VERY SLOWLY
 
-    setSpeedForAllServos(20);
-    setEasingTypeForAllServos(EASE_SINE_IN_OUT);
-    Serial.println(F("Move to 180, 20 degrees/second, sine easing"));
+    servo1.setSpeed(20);
+    servo2.setSpeed(40);
+    setEasingTypeForAllServos(EASE_CUBIC_IN_OUT);
+    Serial.println(F("Move to 180, 20/40 degrees/second, cubic easing"));
     servo1.startEaseTo(180);
     servo2.startEaseTo(180);
 
@@ -94,14 +95,15 @@ void loop() {
         yield();
     }
 
-    Serial.println(F("Servo 1 is at 180 degrees and stopped"));
+    Serial.println(F("Servos at 180 degrees and stopped"));
     delay(2000);
 
     // MOVE TO 0 FAIRLY QUICKLY
 
-    setSpeedForAllServos(90);
+    servo1.setSpeed(90);
+    servo2.setSpeed(45);
     setEasingTypeForAllServos(EASE_CIRCULAR_IN);
-    Serial.println(F("Move to 0, 90 degrees/second, circular easing"));
+    Serial.println(F("Move to 0, 90/45 degrees/second, circular easing"));
     servo1.startEaseTo(0);
     servo2.startEaseTo(0);
 
@@ -109,13 +111,13 @@ void loop() {
         yield();
     }
 
-    Serial.println(F("Servo 1 is at 0 degrees and stopped"));
+    Serial.println(F("Servos at 0 degrees and stopped"));
     delay(2000);
 
     // MOVE TO 180 QUICKLY
 
     setSpeedForAllServos(120);
-    setEasingTypeForAllServos(EASE_CIRCULAR_IN_OUT);
+    setEasingTypeForAllServos(EASE_SINE_IN_OUT);
     Serial.println(F("Move to 180, 120 degrees/second, sine easing"));
     servo1.startEaseTo(180);
     servo2.startEaseTo(180);
@@ -125,8 +127,14 @@ void loop() {
     }
 
     Serial.println(F("Servo 1 is at 180 degrees, flicking back to 0"));
+    int stepDelay = 300;
     servo1.write(0);
-    servo2.write(0);
+    for (int i = 1; i < 7; i++) {
+        servo2.write(180 - i * 30);
+        Serial.print(F("Servo 2 is at: "));
+        Serial.println(180 - i * 30);
+        delay(stepDelay);
+    }
 
     while (servo1.isMoving() || servo2.isMoving()) {
         yield();
